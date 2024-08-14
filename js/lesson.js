@@ -131,3 +131,47 @@
  //event loop - sikl sabytiy
 // JS =>  v8 (dvijok chrome) => eventloop => vyzov
 
+//TAP SLIDER
+const tapContentBlocks=document.querySelectorAll('.tab_content_block')
+const taps= document.querySelectorAll('.tab_content_item')
+const tapParent=document.querySelector('.tab_content_items')
+let  currentTap =0
+const hideTapContent =()=> {
+    tapContentBlocks.forEach((item) => {
+       item.style.display ='none '
+    })
+    taps.forEach((item)=>{
+        item.classList.remove('tab_content_item_active')
+    })
+}
+const showTapContenet=(index=0)=>{
+    tapContentBlocks[index].style.display='block'
+    taps[index].classList.add('tab_content_item_active')
+}
+const nextclick =() =>{
+    hideTapContent()
+    currentTap =(currentTap+ 1) % taps.length
+    showTapContenet(currentTap)
+
+}
+
+
+tapParent.onclick=(event)=>{
+    if(event.target.classList.contains('tab_content_item')){
+        taps.forEach((item, index) => {
+            if (event.target===item){
+                hideTapContent()
+                currentTap = index
+                showTapContenet(index)
+            }
+
+        })
+    }
+}
+
+
+hideTapContent()
+showTapContenet()
+setInterval(nextclick,4000)
+
+
