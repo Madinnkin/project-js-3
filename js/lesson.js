@@ -132,46 +132,107 @@
 // JS =>  v8 (dvijok chrome) => eventloop => vyzov
 
 //TAP SLIDER
-const tapContentBlocks=document.querySelectorAll('.tab_content_block')
-const taps= document.querySelectorAll('.tab_content_item')
-const tapParent=document.querySelector('.tab_content_items')
-let  currentTap =0
-const hideTapContent =()=> {
-    tapContentBlocks.forEach((item) => {
-       item.style.display ='none '
-    })
-    taps.forEach((item)=>{
-        item.classList.remove('tab_content_item_active')
-    })
-}
-const showTapContenet=(index=0)=>{
-    tapContentBlocks[index].style.display='block'
-    taps[index].classList.add('tab_content_item_active')
-}
-const nextclick =() =>{
-    hideTapContent()
-    currentTap =(currentTap+ 1) % taps.length
-    showTapContenet(currentTap)
+// const tapContentBlocks=document.querySelectorAll('.tab_content_block')
+// const taps= document.querySelectorAll('.tab_content_item')
+// const tapParent=document.querySelector('.tab_content_items')
+// let  currentTap =0
+// const hideTapContent =()=> {
+//     tapContentBlocks.forEach((item) => {
+//        item.style.display ='none '
+//     })
+//     taps.forEach((item)=>{
+//         item.classList.remove('tab_content_item_active')
+//     })
+// }
+// const showTapContenet=(index=0)=>{
+//     tapContentBlocks[index].style.display='block'
+//     taps[index].classList.add('tab_content_item_active')
+// }
+// const nextclick =() =>{
+//     hideTapContent()
+//     currentTap =(currentTap+ 1) % taps.length
+//     showTapContenet(currentTap)
+//
+// }
+//
+//
+// tapParent.onclick=(event)=>{
+//     if(event.target.classList.contains('tab_content_item')){
+//         taps.forEach((item, index) => {
+//             if (event.target===item){
+//                 hideTapContent()
+//                 currentTap = index
+//                 showTapContenet(index)
+//             }
+//
+//         })
+//     }
+// }
+//
+//
+// hideTapContent()
+// showTapContenet()
+// setInterval(nextclick,4000)
 
-}
 
 
-tapParent.onclick=(event)=>{
-    if(event.target.classList.contains('tab_content_item')){
-        taps.forEach((item, index) => {
-            if (event.target===item){
-                hideTapContent()
-                currentTap = index
-                showTapContenet(index)
-            }
+const somInput=document.querySelector("#som")
+const usdInput=document.querySelector("#usd")
+const euroInput =document.querySelector('#eur')
 
-        })
+// somInput.oninput=()=> {
+//     const request = new XMLHttpRequest()
+//     request.open('GET', '../data/converter.json')
+//     request.setRequestHeader('Content-type', 'application/json')
+//     request.send()
+//
+//
+//     request.onload = () => {
+//         const data = JSON.parse(request.response)
+//         usdInput.value = (somInput.value / data.usd).toFixed(2)
+//
+//     }
+// }
+// usdInput.oninput=()=> {
+//     const request = new XMLHttpRequest()
+//     request.open('GET', './data/converter.json')
+//     request.setRequestHeader('Content-type', 'application/json')
+//     request.send()
+//
+//
+//     request.onload = () => {
+//         const data = JSON.parse(request.response)
+//         somInput.value = (usdInput.value * data.usd).toFixed(2)
+//
+//     }
+// }
+
+const converter =(element,targetElement1, targetElement2)=>{
+    element.oninput=()=>{
+    const request = new XMLHttpRequest()
+    request.open('GET', '../data/converter.json')
+    request.setRequestHeader('Content-type', 'application/json')
+    request.send()
+
+      request.onload = () => {
+        const data = JSON.parse(request.response)
+          if (element.id==='som'){
+            targetElement1.value = (element.value / data.usd).toFixed(2)
+            targetElement2.value = (element.value / data.eur).toFixed(2)
+
+          }
+          else if (element.id==='usd'){
+            targetElement1.value = (element.value * data.usd).toFixed(2)
+            targetElement2.value = (element.value * data.usd  /data.eur ).toFixed(2)
+          }
+          else if (element.id==='eur'){
+            targetElement1.value = (element.value * data.eur).toFixed(2)
+            targetElement2.value = (element.value * data.eur / data.usd).toFixed(2)
+          }
+          element.value ==="" && (targetElement1.value = "")
+    }
     }
 }
-
-
-hideTapContent()
-showTapContenet()
-setInterval(nextclick,4000)
-
-
+converter(somInput,usdInput,euroInput)
+converter(usdInput,somInput,euroInput)
+converter(euroInput,usdInput,somInput)
