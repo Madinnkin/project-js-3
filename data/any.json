@@ -1,0 +1,11 @@
+
+ {
+   "name": "Madina",
+   "age": 24,
+   "height" : 170,
+   "isMarried" : true,
+   "addres": {
+     "number": 23,
+     "street": "Toguz-Kairyk "
+   }
+ }
