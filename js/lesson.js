@@ -175,10 +175,10 @@
 // setInterval(nextclick,4000)
 
 
-
-const somInput=document.querySelector("#som")
-const usdInput=document.querySelector("#usd")
-const euroInput =document.querySelector('#eur')
+//
+// const somInput=document.querySelector("#som")
+// const usdInput=document.querySelector("#usd")
+// const euroInput =document.querySelector('#eur')
 
 // somInput.oninput=()=> {
 //     const request = new XMLHttpRequest()
@@ -207,32 +207,76 @@ const euroInput =document.querySelector('#eur')
 //     }
 // }
 
-const converter =(element,targetElement1, targetElement2)=>{
-    element.oninput=()=>{
-    const request = new XMLHttpRequest()
-    request.open('GET', '../data/converter.json')
-    request.setRequestHeader('Content-type', 'application/json')
-    request.send()
+// const converter =(element,targetElement1, targetElement2)=>{
+//     element.oninput=()=>{
+    // const request = new XMLHttpRequest()
+    // request.open('GET', '../data/converter.json')
+    // request.setRequestHeader('Content-type', 'application/json')
+    // request.send()
+    //
+    //   request.onload = () => {
+    //     const data = JSON.parse(request.response)
+    //       if (element.id==='som'){
+    //         targetElement1.value = (element.value / data.usd).toFixed(2)
+    //         targetElement2.value = (element.value / data.eur).toFixed(2)
+//
+//           }
+//           else if (element.id==='usd'){
+//             targetElement1.value = (element.value * data.usd).toFixed(2)
+//             targetElement2.value = (element.value * data.usd  /data.eur ).toFixed(2)
+//           }
+//           else if (element.id==='eur'){
+//             targetElement1.value = (element.value * data.eur).toFixed(2)
+//             targetElement2.value = (element.value * data.eur / data.usd).toFixed(2)
+//           }
+//           element.value ==="" && (targetElement1.value = "")
+//     }
+//     }
+// }
+// converter(somInput,usdInput,euroInput)
+// converter(usdInput,somInput,euroInput)
+// converter(euroInput,usdInput,somInput)
 
-      request.onload = () => {
-        const data = JSON.parse(request.response)
-          if (element.id==='som'){
-            targetElement1.value = (element.value / data.usd).toFixed(2)
-            targetElement2.value = (element.value / data.eur).toFixed(2)
+// Cart -Switcher
+const cardBlock=document.querySelector(".card")
+const btnNext =document.querySelector("#btn-next")
+const btnPrev =document.querySelector("#btn-prev")
+let cardId=1
 
-          }
-          else if (element.id==='usd'){
-            targetElement1.value = (element.value * data.usd).toFixed(2)
-            targetElement2.value = (element.value * data.usd  /data.eur ).toFixed(2)
-          }
-          else if (element.id==='eur'){
-            targetElement1.value = (element.value * data.eur).toFixed(2)
-            targetElement2.value = (element.value * data.eur / data.usd).toFixed(2)
-          }
-          element.value ==="" && (targetElement1.value = "")
-    }
-    }
+function card (){
+    fetch(`https://jsonplaceholder.typicode.com/todos/${cardId}`)
+       .then(response =>response.json())
+       .then(data => {
+         cardBlock.innerHTML =`
+             <p>${data.title}</p>
+             <p style="color: ${data.completed ? 'green' : 'red'}">${data.completed}</p>
+             <span>${data.id}</span>`
+       })
 }
-converter(somInput,usdInput,euroInput)
-converter(usdInput,somInput,euroInput)
-converter(euroInput,usdInput,somInput)
+btnNext.onclick=()=>{
+    cardId=(cardId%200)+1
+    card()
+}
+btnPrev.onclick=()=>{
+    cardId=(cardId===1)?200:cardId -1
+    card()
+}
+  card()
+
+
+
+
+const url = `https://jsonplaceholder.typicode.com/posts`
+
+fetch(url)
+    .then(response =>response.json())
+    .then(data => {
+        console.log("posts:", data);
+    })
+    .catch(error=>{
+        console.log("error",error)
+    })
+
+
+
+
